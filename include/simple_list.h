@@ -5,7 +5,6 @@
 template <typename T>
 struct Node
 {
-
     Node(T _data):data(_data){}
     T        data;
     Node<T> *next;
@@ -38,6 +37,8 @@ struct const_iterator : std::iterator<std::forward_iterator_tag, T const> {
     {
     return !(*this == other);
     }
+
+    
     private:
         Node<T> * ptr;
 };

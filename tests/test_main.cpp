@@ -1,6 +1,6 @@
 #include "lib.h"
 #include <sstream>
-#include <allocator.h>
+#include "allocator.h"
 #include <sstream>
 
 #define BOOST_TEST_MODULE test_main
