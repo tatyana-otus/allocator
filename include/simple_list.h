@@ -11,33 +11,35 @@ struct Node
     Node<T> *next;
 };
 
+
 template <typename T >
 struct const_iterator : std::iterator<std::forward_iterator_tag, T const> {
 
     const_iterator(Node<T>*  _ptr = nullptr) : ptr(_ptr) {}
         
-    const_iterator & operator++() {
-        if (ptr != nullptr) {
-            ptr = ptr->next;
-        }
-            return *this;
-        }
- 
+    const_iterator & operator++()
+    {
+    if (ptr != nullptr) 
+        ptr = ptr->next;
+        return *this;
+    }
 
-        T const & operator*() const { return ptr->data; }
+
+    T const & operator*() const { return ptr->data; }
         
         
-        bool operator==(const_iterator const & other) const {
-            return ptr == other.ptr;
-        }
+    bool operator==(const_iterator const & other) const 
+    {
+        return ptr == other.ptr;
+    }
         
         
-        bool operator!=(const_iterator const & other) const {
-            return !(*this == other);
-        }
+    bool operator!=(const_iterator const & other) const 
+    {
+    return !(*this == other);
+    }
     private:
         Node<T> * ptr;
-
 };
 
 
@@ -47,15 +49,16 @@ class simple_list {
 private:
     Node<T> *head = nullptr;
     Node<T> *tail = nullptr;
-    //size_t size   = 0;
+
     using alloc_t = typename Allocator::template rebind<Node<T>>::other;
     alloc_t alloc;
 
 public:
     simple_list(){}
 
-    void push_back( const T& value ){
 
+    void push_back( const T& value )
+    {
         Node<T>* p = alloc.allocate(1u);  
         alloc.construct(p, value);
 
@@ -69,17 +72,21 @@ public:
         tail->next = nullptr;
     }
 
-    const_iterator<T> begin(){
 
+    const_iterator<T> begin()
+    {
         return const_iterator<T>(this->head);
     }
 
-    const_iterator<T> end(){
 
+    const_iterator<T> end()
+    {
         return nullptr;
     }
 
-    ~simple_list(){
+
+    ~simple_list()
+    {
         auto h = this->head;
         while(h != nullptr){
             auto p = h;
@@ -87,5 +94,6 @@ public:
             alloc.destroy(p);
             alloc.deallocate(p, 1u);
         }
+        this->head = nullptr;
     }
 };

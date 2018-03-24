@@ -17,7 +17,8 @@ constexpr int factorial(int n)
 }
 
 
-void std_map_def_alloc(size_t n = N_SZ) {
+void std_map_def_alloc(size_t n = N_SZ)
+{
 
     auto m = std::map<int, int, std::less<int> >{};
     for(size_t i = 0; i < n; i++) {      
@@ -26,7 +27,8 @@ void std_map_def_alloc(size_t n = N_SZ) {
 }
 
 
-void std_map_custom_alloc(size_t n = N_SZ, std::ostream& os = std::cout) {
+void std_map_custom_alloc(size_t n = N_SZ, std::ostream& os = std::cout)
+{
 
     auto m = std::map<int, int, std::less<int>, blk_allocator<std::pair<const int, int>, N_SZ> >{};
     for(size_t i = 0; i < n; i++) {       
@@ -39,7 +41,8 @@ void std_map_custom_alloc(size_t n = N_SZ, std::ostream& os = std::cout) {
 }
 
 
-void simple_list_def_alloc(size_t n = N_SZ) {
+void simple_list_def_alloc(size_t n = N_SZ)
+{
     
     auto l = simple_list<int>{};
     for (size_t i = 0; i < n; ++i){

@@ -30,18 +30,14 @@ BOOST_AUTO_TEST_CASE(std_map_def_allocator)
      BOOST_CHECK_NO_THROW(std_map_def_alloc(0));
      BOOST_CHECK_NO_THROW(std_map_def_alloc(1));
      BOOST_CHECK_NO_THROW(std_map_def_alloc(10));
-     BOOST_CHECK_NO_THROW(std_map_def_alloc(11));
+     BOOST_CHECK_NO_THROW(std_map_def_alloc(1000));
 }
 
 BOOST_AUTO_TEST_CASE(std_map_cust_allocator)
 {
     BOOST_CHECK_NO_THROW(std_map_custom_alloc(0));
     BOOST_CHECK_NO_THROW(std_map_custom_alloc(1));
-    BOOST_CHECK_NO_THROW(std_map_custom_alloc(10));
-
-    BOOST_CHECK_THROW   (std_map_custom_alloc(11), std::invalid_argument); // 11 > 10
-    BOOST_CHECK_THROW   (std_map_custom_alloc(20), std::invalid_argument); // 20 > 10
-
+    BOOST_CHECK_NO_THROW(std_map_custom_alloc(1000));
 
     std::stringstream oss;
     std::string out_data =
@@ -65,7 +61,7 @@ BOOST_AUTO_TEST_CASE(simple_list_def_allocator)
      BOOST_CHECK_NO_THROW(simple_list_def_alloc(0));
      BOOST_CHECK_NO_THROW(simple_list_def_alloc(1));
      BOOST_CHECK_NO_THROW(simple_list_def_alloc(10));
-     BOOST_CHECK_NO_THROW(simple_list_def_alloc(11));
+     BOOST_CHECK_NO_THROW(simple_list_def_alloc(1000));
      
 }
 
@@ -74,9 +70,7 @@ BOOST_AUTO_TEST_CASE(simple_list_cust_allocator)
     BOOST_CHECK_NO_THROW(simple_list_custom_alloc(0));
     BOOST_CHECK_NO_THROW(simple_list_custom_alloc(1));
     BOOST_CHECK_NO_THROW(simple_list_custom_alloc(10));
-
-    BOOST_CHECK_THROW   (simple_list_custom_alloc(11), std::invalid_argument); // 11 > 10
-    BOOST_CHECK_THROW   (simple_list_custom_alloc(20), std::invalid_argument); // 20 > 10   
+    BOOST_CHECK_NO_THROW(simple_list_custom_alloc(1000));  
 
     std::stringstream oss;
     std::string out_data =

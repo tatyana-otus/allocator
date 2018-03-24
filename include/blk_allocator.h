@@ -1,78 +1,93 @@
-
 #pragma once
 
 #include <iostream>
 
 
 template <typename T, size_t num = 64>
-struct blk_allocator
+class blk_allocator
 {
     static_assert(num > 0, "");
 
+
+    struct list_head{
+        list_head* prev;
+    };
+
+
+private:
+    list_head* head = nullptr;
+
+    T*  blk_ptr = nullptr;
+    int cnt     = 0;
+
+
+public:     
     using value_type = T;
     typedef T*         pointer;
     typedef const T*   const_pointer;
     typedef T&         reference;
     typedef const T&   const_reference;
 
+
     template <class U> struct rebind { using other =  blk_allocator<U, num>; };
+
+
+    blk_allocator() = default;
+    template< class U >
+    blk_allocator( const blk_allocator<U, num>& other ){};
+
 
     T* allocate(std::size_t n)
     {
-        std::cout << __PRETTY_FUNCTION__ << std::endl;
-        void* p;
-
-        if((cnt + n) > num)
+        if(n != 1)
             throw std::invalid_argument( "Invalid  number of elements for allocate()" );
 
-        if(blk_ptr == nullptr) {
-            p = malloc(num * sizeof(T));
-            if(!p) throw std::bad_alloc();
-            blk_ptr = reinterpret_cast<T*>(p); 
-        }
-        else {
-            p = blk_ptr + cnt;
-        }
-        cnt += n;
+        int idx = cnt % num;
 
-        std::cout << "[allocate] p = " << (uint64_t)p ;
-        std::cout << "  n = " << n << "  sizeof(T) = " << sizeof(T) << "  malloc( " <<  n * sizeof(T) << " )"<< std::endl << std::endl;
+        if((idx == 0) || (head == nullptr)) {
+            auto p = malloc(sizeof(list_head) + num * sizeof(T));
 
-        return reinterpret_cast<T*>(p);;
+            auto new_head = reinterpret_cast<list_head*>(p);
+            new_head->prev = head; 
+            head = new_head;
+
+            blk_ptr = reinterpret_cast<T*>(reinterpret_cast<list_head*>(p) + 1);
+        }
+
+        auto ret_ptr = blk_ptr + idx;       
+        ++cnt;
+
+        return ret_ptr;
     }
+
 
     void deallocate(T* p, std::size_t n)
     {
-        std::cout << __PRETTY_FUNCTION__ << std::endl ;
-
         cnt -= n;
         if(cnt < 0)
             throw std::invalid_argument( "Invalid  number of elements for deallocate()" );
-        if(cnt == 0) {
-            std::free(blk_ptr);
-            blk_ptr = nullptr;
-        } 
 
-        std::cout << "[deallocate] p = " << (uint64_t)p << std::endl << std::endl;
+        if(cnt == 0) {
+            auto h = head;
+            while(h != nullptr){
+                auto p = h;
+                h = h->prev;
+                std::free(p);
+            }
+            head    = nullptr;
+            blk_ptr = nullptr;
+        }        
     }
+
 
     template<typename U, typename ... Args>
     void construct( U* p, Args&&... args ) 
     {
-        std::cout << __PRETTY_FUNCTION__ << std::endl;
-        std::cout << "[construct] p = " << (uint64_t)p << std::endl << std::endl;
-
         new(p) U(std::forward<Args>(args)...);
     }
 
     void destroy(T * p) 
-    {
-        std::cout << __PRETTY_FUNCTION__ << std::endl;
-        std::cout << "[destroy ]p = " << (uint64_t)p << std::endl << std::endl;
-        
+    {        
         p->~T();
     }
-
-    int cnt = 0;
-    T*  blk_ptr     = nullptr;
 };
