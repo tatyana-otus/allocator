@@ -46,6 +46,7 @@ public:
 
         if((idx == 0) || (head == nullptr)) {
             auto p = malloc(sizeof(list_head) + num * sizeof(T));
+            if(!p) throw std::bad_alloc();
 
             auto new_head = reinterpret_cast<list_head*>(p);
             new_head->prev = head; 
