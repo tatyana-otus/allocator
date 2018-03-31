@@ -1,7 +1,7 @@
 #pragma once
 
 #include <iostream>
-
+#include "debug_log.h"
 
 template <typename T, size_t num = 64>
 class blk_allocator
@@ -34,7 +34,7 @@ public:
 
     blk_allocator() = default;
     template< class U >
-    blk_allocator( const blk_allocator<U, num>& other ){};
+    blk_allocator( const blk_allocator<U, num>& other ){}
 
 
     T* allocate(std::size_t n)

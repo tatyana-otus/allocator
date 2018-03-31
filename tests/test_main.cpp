@@ -3,6 +3,7 @@
 #include "allocator.h"
 #include <sstream>
 
+
 #define BOOST_TEST_MODULE test_main
 
 #include <boost/test/unit_test.hpp>
@@ -52,7 +53,7 @@ BOOST_AUTO_TEST_CASE(std_map_cust_allocator)
     "8 40320\n"
     "9 362880\n";
 
-    std_map_custom_alloc(10, oss);
+    std_map_custom_alloc(10, 10, oss);
     BOOST_CHECK( oss.str() == out_data );
 }
 
@@ -85,7 +86,7 @@ BOOST_AUTO_TEST_CASE(simple_list_cust_allocator)
     "8\n"
     "9\n";
     
-    simple_list_custom_alloc(10, oss);
+    simple_list_custom_alloc(10, 10, oss);
     BOOST_CHECK( oss.str() == out_data ); 
 }
 

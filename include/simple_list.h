@@ -11,12 +11,17 @@ struct Node
 };
 
 
-template <typename T >
-struct const_iterator : std::iterator<std::forward_iterator_tag, T const> {
+template <typename T, class Allocator = std::allocator<T> >
+class simple_list {
+public:
 
-    const_iterator(Node<T>*  _ptr = nullptr) : ptr(_ptr) {}
+    using value_type = T;
+
+struct iterator : std::iterator<std::forward_iterator_tag, T > {
+
+    iterator(Node<T>*  _ptr = nullptr) : ptr(_ptr) {}
         
-    const_iterator & operator++()
+    iterator & operator++()
     {
     if (ptr != nullptr) 
         ptr = ptr->next;
@@ -24,28 +29,22 @@ struct const_iterator : std::iterator<std::forward_iterator_tag, T const> {
     }
 
 
-    T const & operator*() const { return ptr->data; }
+    T  & operator*()  { return ptr->data; }
         
         
-    bool operator==(const_iterator const & other) const 
+    bool operator==(iterator  & other)  
     {
         return ptr == other.ptr;
     }
         
         
-    bool operator!=(const_iterator const & other) const 
+    bool operator!=(iterator  & other)  
     {
-    return !(*this == other);
-    }
-
-    
+        return !(*this == other);
+    }    
     private:
         Node<T> * ptr;
 };
-
-
-template <typename T, class Allocator = std::allocator<T> >
-class simple_list {
 
 private:
     Node<T> *head = nullptr;
@@ -54,9 +53,12 @@ private:
     using alloc_t = typename Allocator::template rebind<Node<T>>::other;
     alloc_t alloc;
 
-public:
-    simple_list(){}
 
+public:
+    simple_list() {};
+    simple_list(const Allocator& _alloc) : alloc(_alloc) {};
+
+    //void reserve(size_t _num) { alloc.eserve(_num); }
 
     void push_back( const T& value )
     {
@@ -73,18 +75,21 @@ public:
         tail->next = nullptr;
     }
 
-
-    const_iterator<T> begin()
+    iterator begin()
     {
-        return const_iterator<T>(this->head);
+        return iterator(this->head);
     }
 
 
-    const_iterator<T> end()
+    iterator end()
     {
         return nullptr;
     }
 
+    iterator insert( iterator pos, const T& value )
+    {
+
+    }
 
     ~simple_list()
     {
