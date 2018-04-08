@@ -16,12 +16,9 @@
 template<typename T>
 static double gen_map(T& m, size_t size = 64)
 {
-  
-    int fact = 0;
-    int i = 0;
     auto start = std::chrono::high_resolution_clock::now();
 
-    std::generate_n(std::inserter(m, m.begin()), size, [&i, &fact]() { fact =  (i == 1 || i == 0) ? 1 : fact * i;
+    std::generate_n(std::inserter(m, m.begin()), size, [i = 0, fact = 0]()mutable { fact =  (i == 1 || i == 0) ? 1 : fact * i;
                                                                        return std::make_pair(i++, fact); 
                                                                      });  
     auto end = std::chrono::high_resolution_clock::now();
@@ -32,10 +29,9 @@ static double gen_map(T& m, size_t size = 64)
 template<typename T>
 static double gen_list(T& list, size_t size = 64)
 {
-    int i = 0;
     auto start = std::chrono::high_resolution_clock::now();
 
-    std::generate_n(std::back_inserter(list), size, [&i]() { return i++; });  
+    std::generate_n(std::back_inserter(list), size, [i = 0]()mutable { return i++; });  
 
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> diff = end-start;
@@ -53,7 +49,7 @@ void std_map_def_alloc(size_t n = N_SZ)
 void std_map_custom_alloc(size_t n = N_SZ, size_t custom_alloc_size = N_SZ, std::ostream& os = std::cout)
 {
     blk_allocator_v1<std::pair<const int, int>> alloc(custom_alloc_size);
-    auto m = std::map<int, int, std::less<int>, blk_allocator_v1<std::pair<const int, int>> >(alloc);
+    auto m = std::map<int, int, std::less<int>, blk_allocator_v1<std::pair<const int, int>> >(std::move(alloc));
     gen_map(m, n);
     for (auto& kv : m)  os << kv.first << " " << kv.second << std::endl;
 }
