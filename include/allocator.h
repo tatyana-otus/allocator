@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <iterator>
 #include <chrono>
+#include <numeric>
 
 
  const int N_SZ = 10;
@@ -80,7 +81,6 @@ void test_vector(size_t n = N_SZ, size_t custom_alloc_size = N_SZ, std::ostream&
     auto v = std::vector<int, blk_allocator_v1<int>>(n, std::move(alloc));
     std::iota(v.begin(), v.end(), 1);
 
-    //gen_iota(v, n);
     for (const auto&  val: v)
         os << val << std::endl;
 }

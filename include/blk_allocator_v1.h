@@ -41,14 +41,14 @@ public:
     template <class U> struct rebind { using other =  blk_allocator_v1<U>; };
 
     blk_allocator_v1(size_t _num):num(_num ), head(nullptr) { D_PF_LOG(std::cout); }; 
-    blk_allocator_v1( const blk_allocator_v1& other ):num(other.num), head(nullptr){ D_PF_LOG(std::cout); };
+    blk_allocator_v1( const blk_allocator_v1& other ):num(other.num), head(nullptr){ D_PF_LOG(std::cout); }
 
 
     template< class U >
-    blk_allocator_v1( const blk_allocator_v1<U>& other ):num(other.num), head(nullptr){ D_PF_LOG(std::cout); };
+    blk_allocator_v1( const blk_allocator_v1<U>& other ):num(other.num), head(nullptr){ D_PF_LOG(std::cout); }
 
     template< class U >
-    blk_allocator_v1( blk_allocator_v1<U>&& other ):num(other.num), head(nullptr){ D_PF_LOG(std::cout); };
+    blk_allocator_v1( blk_allocator_v1<U>&& other ):num(other.num), head(nullptr){ D_PF_LOG(std::cout); }
 
 
     T* allocate(std::size_t n)

@@ -23,8 +23,7 @@ struct iterator : std::iterator<std::forward_iterator_tag, T > {
         
     iterator & operator++()
     {
-    if (ptr != nullptr) 
-        ptr = ptr->next;
+        if (ptr != nullptr) ptr = ptr->next;            
         return *this;
     }
 
