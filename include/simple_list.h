@@ -58,7 +58,6 @@ public:
     simple_list() {};
     simple_list(const Allocator& _alloc) : alloc(_alloc) {};
 
-    //void reserve(size_t _num) { alloc.eserve(_num); }
 
     void push_back( const T& value )
     {

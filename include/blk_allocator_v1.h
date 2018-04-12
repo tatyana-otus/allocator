@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include <iostream>
@@ -10,14 +9,12 @@ class blk_allocator_v1
 {
     struct Deleter
     {
-        void operator()(void* x)
+        void operator()(void* p)
         {
             D_PF_LOG(std::cout); 
 
-            if(x != nullptr){
-                reinterpret_cast<list_head*>(x)->prev.reset(nullptr);
-                free(x);
-            }    
+            reinterpret_cast<list_head*>(p)->prev.reset(nullptr);
+            free(p);   
         }
     };
 
@@ -64,7 +61,7 @@ public:
         }
 
         if( idx == 0 ) {
-            size_t block_size = (n > num) ? n : num;
+            size_t block_size = (n > num) ? (n + 0.5)/num*num : num;
 
             auto p = reinterpret_cast<char*>(malloc(sizeof(list_head) + block_size * sizeof(T)));
             if(!p) throw std::bad_alloc();
