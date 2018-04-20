@@ -61,7 +61,7 @@ public:
         }
 
         if( idx == 0 ) {
-            size_t block_size = (n > num) ? (n + 0.5)/num*num : num;
+            size_t block_size = (n > num) ? n : num;
 
             auto p = reinterpret_cast<char*>(malloc(sizeof(list_head) + block_size * sizeof(T)));
             if(!p) throw std::bad_alloc();

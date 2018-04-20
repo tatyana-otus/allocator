@@ -84,10 +84,6 @@ public:
         return nullptr;
     }
 
-    iterator insert( iterator pos, const T& value )
-    {
-
-    }
 
     ~simple_list()
     {
