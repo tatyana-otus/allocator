@@ -30,4 +30,5 @@ add_test(test_std_map_def_allocator      test_main_cli -t test_suite_allocator/s
 add_test(test_std_map_cust_allocator     test_main_cli -t test_suite_allocator/std_map_cust_allocator)
 add_test(test_simple_list_def_allocator  test_main_cli -t test_suite_allocator/simple_list_def_allocator)
 add_test(test_simple_list_cust_allocator test_main_cli -t test_suite_allocator/simple_list_cust_allocator)
+add_test(test_memory_leak                test_main_cli -t test_suite_allocator/memory_leak)
 

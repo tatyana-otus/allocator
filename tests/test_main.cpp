@@ -90,4 +90,15 @@ BOOST_AUTO_TEST_CASE(simple_list_cust_allocator)
     BOOST_CHECK( oss.str() == out_data ); 
 }
 
+BOOST_AUTO_TEST_CASE(memory_leak)
+{
+    BOOST_CHECK( test::count == 0 );
+    {
+        blk_allocator_v1<int> alloc(10);
+        auto l = simple_list<int, blk_allocator_v1<int>>(std::move(alloc));
+        gen_iota(l, 10);
+        BOOST_CHECK( test::count = 1 );
+    }
+    BOOST_CHECK( test::count == 0 ); 
+}
 BOOST_AUTO_TEST_SUITE_END()

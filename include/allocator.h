@@ -66,7 +66,7 @@ void simple_list_def_alloc(size_t n = N_SZ)
 
 void simple_list_custom_alloc(size_t n = N_SZ, size_t custom_alloc_size = N_SZ, std::ostream& os = std::cout)
 {   
-    blk_allocator_v1<std::pair<const int, int>> alloc(custom_alloc_size);
+    blk_allocator_v1<int> alloc(custom_alloc_size);
     auto l = simple_list<int, blk_allocator_v1<int>>(std::move(alloc));
 
     gen_iota(l, n);
@@ -77,7 +77,7 @@ void simple_list_custom_alloc(size_t n = N_SZ, size_t custom_alloc_size = N_SZ, 
 
 void test_vector(size_t n = N_SZ, size_t custom_alloc_size = N_SZ, std::ostream& os = std::cout)
 {
-    blk_allocator_v1<std::pair<const int, int>> alloc(custom_alloc_size);
+    blk_allocator_v1<int> alloc(custom_alloc_size);
     auto v = std::vector<int, blk_allocator_v1<int>>(n, std::move(alloc));
     std::iota(v.begin(), v.end(), 1);
 

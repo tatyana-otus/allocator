@@ -4,6 +4,13 @@
 #include <memory>
 #include "debug_log.h"
 
+namespace test {
+    static int count = 0;
+
+    void* malloc (std::size_t s) { ++count; return std::malloc(s); }
+    void  free(void *p)          { --count; std::free(p); }
+}
+
 template <typename T>
 class blk_allocator_v1
 {
@@ -14,7 +21,7 @@ class blk_allocator_v1
             D_PF_LOG(std::cout); 
 
             reinterpret_cast<list_head*>(p)->prev.reset(nullptr);
-            free(p);   
+            test::free(p);   
         }
     };
 
@@ -63,7 +70,7 @@ public:
         if( idx == 0 ) {
             size_t block_size = (n > num) ? n : num;
 
-            auto p = reinterpret_cast<char*>(malloc(sizeof(list_head) + block_size * sizeof(T)));
+            auto p = reinterpret_cast<char*>(test::malloc(sizeof(list_head) + block_size * sizeof(T)));
             if(!p) throw std::bad_alloc();
 
             auto new_head = reinterpret_cast<list_head*>(p);
